@@ -10,7 +10,6 @@ router.get('/', (req, res, next) => {
     // Request handling
     // CORE CHALLENGE 1 -
     // HTML page is written
-    console.log(res)
     res.write('<html>');
     res.write('<head><title>Hello Browser!</Title></head>');
     res.write('<body>');
