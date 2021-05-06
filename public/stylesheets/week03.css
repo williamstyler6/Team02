@@ -1,0 +1,31 @@
+#searchIcon {
+  line-height: 0;
+}
+
+.product-card {
+  display: flex;
+  align-items: center;
+}
+
+.product-card .product-card-content h1 {
+  color: teal;
+  font-weight: 600;
+  font-size: 1.8em;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.product-card .product-card-content p {
+  padding: 0;
+  margin: 0;
+  line-height: 1.2em;
+  margin-bottom: 5px;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.product-card .product-card-content ul {
+  padding:0;
+  margin: 0;
+}
+
