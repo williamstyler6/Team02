@@ -11,18 +11,41 @@
  * IMPORTANT: Make sure to run "npm install" in your root before "npm start"
  *******************************************************************************/
 // Our initial setup (package requires, port number setup)
+require('dotenv').config()
+
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const path = require('path');
+const { MongoClient } = require('mongodb');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
-
 const app = express();
+
+// Database
+const corsOptions = {
+  origin: "https://<your_app_name>.herokuapp.com/",
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+const options = {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  family: 4
+};
+
+const MONGODB_URL = process.env.MONGODB_URL || `mongodb+srv://team02:FhRZxyS8WiRFQWr9@cluster0.dyyqc.mongodb.net/shop?retryWrites=true&w=majority`;
+
+const client = new MongoClient(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Route setup. You can implement more in the future!
 const ta01Routes = require('./routes/ta01');
 const ta02Routes = require('./routes/ta02');
 const ta03Routes = require('./routes/ta03'); 
-const ta04Routes = require('./routes/ta04'); 
+const ta04Routes = require('./routes/ta04');
 
 app.use(express.static(path.join(__dirname, 'public')))
    .set('views', path.join(__dirname, 'views'))
@@ -45,4 +68,11 @@ app.use(express.static(path.join(__dirname, 'public')))
      // 404 page
      res.render('pages/404', {title: '404 - Page Not Found', path: req.url})
    })
-   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+   
+client.connect(err => {
+  if(err) throw err;
+  console.log('Database connected');
+  app.listen(PORT, () => console.log(`Listening on http://localhost:${ PORT }`));
+  client.close();
+});
+  
